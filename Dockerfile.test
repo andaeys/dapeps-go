@@ -1,0 +1,23 @@
+# Use a base image that includes Go and other necessary dependencies for running tests
+FROM golang:1.21.1-alpine AS builder
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy your project files (including tests) into the container
+COPY . .
+
+# Install Ginkgo and Gomega
+RUN go get github.com/onsi/ginkgo/ginkgo
+RUN go get github.com/onsi/gomega/...
+
+# Install PostgreSQL client for Alpine Linux
+RUN apk update && \
+    apk add postgresql-client
+
+# Copy the entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Run Ginkgo tests
+CMD ["go", "test", "./..."]

@@ -21,5 +21,13 @@ services:
     networks:
       - my_network
 
+  # tests:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.test
+  #   volumes:
+  #     - .:/app
+  #   command: ["ginkgo"]    
+
 networks:
   my_network:     
