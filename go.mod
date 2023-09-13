@@ -1,4 +1,4 @@
-module go-rest-api
+module dapeps-go
 
 go 1.21.1
 
