@@ -3,6 +3,7 @@ package user_test
 import (
 	"dapeps-go/db"
 	"dapeps-go/user"
+	"dapeps-go/wrapper"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -11,14 +12,14 @@ import (
 
 var _ = Describe("User repo test", func() {
 	var (
-		userRepo user.UserRepositoryImpl
+		userRepo user.UserRepository
 		dbCon    *gorm.DB
 	)
 
 	BeforeSuite(func() {
 		db.InitDB()
 		dbCon = db.GetDB()
-		userRepo = user.NewUserRepository(dbCon)
+		userRepo = user.NewUserRepository(wrapper.NewGormDB(dbCon))
 	})
 
 	AfterSuite(func() {

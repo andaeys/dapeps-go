@@ -5,6 +5,7 @@ import (
 	"dapeps-go/db"
 	"dapeps-go/delivery/http"
 	"dapeps-go/user"
+	"dapeps-go/wrapper"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,10 +18,10 @@ func main() {
 	dbConnection := db.GetDB()
 
 	//provide the repo
-	userRepository := user.NewUserRepository(dbConnection)
+	userRepository := user.NewUserRepository(wrapper.NewGormDB(dbConnection))
 
 	//provide the service
-	userService := &user.UserServiceImpl{UserRepository: &userRepository}
+	userService := &user.UserServiceImpl{UserRepository: userRepository}
 
 	//setup route handlers
 	handlers := http.NewUserHandler(userService)
