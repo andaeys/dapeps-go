@@ -32,6 +32,7 @@ func (r *UserRepositoryImpl) Create(user *User) error {
 
 func (r *UserRepositoryImpl) GetUsers() ([]User, error) {
 	var users []User
+	// users = append(users, User{Name: "New User"})
 	result := r.DB.Find(&users)
 	if result.Error != nil {
 		return nil, result.Error

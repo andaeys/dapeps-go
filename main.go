@@ -17,10 +17,10 @@ func main() {
 	dbConnection := db.GetDB()
 
 	//provide the repo
-	userRepository := user.NewUserRepository(dbConnection)
+	userRepository := user.NewUserRepository(db.NewRealDB(dbConnection))
 
 	//provide the service
-	userService := &user.UserServiceImpl{UserRepository: &userRepository}
+	userService := &user.UserServiceImpl{UserRepository: userRepository}
 
 	//setup route handlers
 	handlers := http.NewUserHandler(userService)

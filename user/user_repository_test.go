@@ -37,7 +37,7 @@ var _ = Describe("UserRepositoryImpl", func() {
 
 			er := errors.New("Hello")
 
-			mockDB.SetResult("Find", &gorm.DB{}, datas, er)
+			mockDB.SetResult("Find", &gorm.DB{}, &datas, er)
 
 			// Call the method under test
 			users, err := userRepository.GetUsers()
