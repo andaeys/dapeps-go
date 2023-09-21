@@ -1,68 +1,50 @@
+// /path/to/your/project/user/user_repository_test.go
+
 package user_test
 
 import (
 	"dapeps-go/db"
 	"dapeps-go/user"
+	"errors"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"gorm.io/gorm"
 )
 
-var _ = Describe("User repo test", func() {
+var _ = Describe("UserRepositoryImpl", func() {
 	var (
-		userRepo user.UserRepositoryImpl
-		dbCon    *gorm.DB
+		mockDB         *db.MockGormDB
+		userRepository user.UserRepository
 	)
 
-	BeforeSuite(func() {
-		db.InitDB()
-		dbCon = db.GetDB()
-		userRepo = user.NewUserRepository(dbCon)
+	BeforeEach(func() {
+		mockDB = db.NewMockGormDB()
+		userRepository = user.NewUserRepository(mockDB)
 	})
 
-	AfterSuite(func() {
-		dbCon.Exec("DELETE FROM users")
-	})
+	Describe("GetUsers", func() {
+		It("should return list of users", func() {
+			expectedUsers := []user.User{
+				{Name: "John Doe", Email: "john@example.com"},
+				{Name: "Jane Doe", Email: "jane@example.com"},
+			}
 
-	//Test Get Users
-	Describe("Get Users test", func() {
-		var (
-			expected_users []user.User
-			result_users   []user.User
-			result_err     error
-			err            error
-		)
+			var datas []interface{}
+			for _, u := range expectedUsers {
+				datas = append(datas, u)
+			}
 
-		Context("when table user has records", func() {
+			er := errors.New("Hello")
 
-			BeforeEach(func() {
-				// Create multiple users in the database for testing
-				user1 := user.User{Name: "Momo Oyen", Email: "momo@pepsi.com"}
-				user2 := user.User{Name: "Paman mbul", Email: "gembul@pepsi.com"}
-				expected_users[0] = user1
-				expected_users[1] = user2
+			mockDB.SetResult("Find", &gorm.DB{}, &datas, er)
 
-				err = dbCon.Create(&user1).Error
-				Expect(err).NotTo(HaveOccurred())
+			// Call the method under test
+			users, err := userRepository.GetUsers()
 
-				err = dbCon.Create(&user2).Error
-				Expect(err).NotTo(HaveOccurred())
-			})
-
-			It("sould return list of users model", func() {
-				result_users, result_err = userRepo.GetUsers()
-				Expect(result_err).NotTo(HaveOccurred())
-				Expect(len(expected_users)).To(Equal(len(result_users)))
-			})
-		})
-
-		Context("when table user is empty", func() {
-			It("sould return empty array", func() {
-				result_users, result_err = userRepo.GetUsers()
-				Expect(result_err).NotTo(HaveOccurred())
-				Expect(0).To(Equal(len(result_users)))
-			})
+			// Check expectations
+			Expect(err).To(BeNil())
+			Expect(expectedUsers).To(ConsistOf(users))
 		})
 	})
 })

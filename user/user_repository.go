@@ -1,6 +1,6 @@
 package user
 
-import "gorm.io/gorm"
+import "dapeps-go/db"
 
 type UserRepository interface {
 	GetUsers() ([]User, error)
@@ -9,11 +9,11 @@ type UserRepository interface {
 }
 
 type UserRepositoryImpl struct {
-	DB *gorm.DB
+	DB db.GormDB
 }
 
-func NewUserRepository(db *gorm.DB) UserRepositoryImpl {
-	return UserRepositoryImpl{DB: db}
+func NewUserRepository(d db.GormDB) UserRepository {
+	return &UserRepositoryImpl{DB: d}
 }
 
 func (r *UserRepositoryImpl) GetByEmail(email string) (*User, error) {
@@ -32,6 +32,7 @@ func (r *UserRepositoryImpl) Create(user *User) error {
 
 func (r *UserRepositoryImpl) GetUsers() ([]User, error) {
 	var users []User
+	// users = append(users, User{Name: "New User"})
 	result := r.DB.Find(&users)
 	if result.Error != nil {
 		return nil, result.Error
