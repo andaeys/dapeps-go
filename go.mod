@@ -5,6 +5,7 @@ go 1.21.1
 require github.com/gin-gonic/gin v1.9.1
 
 require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
@@ -13,7 +14,9 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/nxadm/tail v1.4.8 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
+	github.com/stretchr/objx v0.5.0 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 )
 
@@ -36,6 +39,7 @@ require (
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.27.10
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
+	github.com/stretchr/testify v1.8.4
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	golang.org/x/arch v0.3.0 // indirect
